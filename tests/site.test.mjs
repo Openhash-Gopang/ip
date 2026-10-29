@@ -711,3 +711,11 @@ test('D 화면: 사용법·특징 탭은 왼쪽 메뉴 안으로 옮겨지고, �
   const o = load('index.html').window.document;
   assert.equal(o.querySelector('.side-tabs').parentNode, o.body, 'D 가 아니면 오른쪽 가장자리');
 });
+
+test('D 머리말: .head 자체에 backdrop-filter 가 없다(있으면 우측 상단 메뉴가 왼쪽 레일 위로 겹친다) — 유리는 ::before', () => {
+  const th = read('assets/themes.css');
+  const rules = [...th.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter((m) => /backdrop-filter/.test(m[2]));
+  for (const m of rules) for (const sel of m[1].split(',').map((x) => x.trim())) assert.ok(!/^html\[data-theme="d"\] \.head$/.test(sel) && !/^html\[data-theme(="d")?\] \.head$/.test(sel), '머리말 직접: ' + sel);
+  assert.match(th, /html\[data-theme="d"\] \.head::before \{[^}]*backdrop-filter: blur\(14px\)/);
+  assert.match(th, /html\[data-theme="d"\] \.head-right \{ position: fixed; top: 12px; right: 24px/);
+});
