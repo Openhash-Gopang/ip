@@ -719,3 +719,13 @@ test('D 머리말: .head 자체에 backdrop-filter 가 없다(있으면 우측 �
   assert.match(th, /html\[data-theme="d"\] \.head::before \{[^}]*backdrop-filter: blur\(14px\)/);
   assert.match(th, /html\[data-theme="d"\] \.head-right \{ position: fixed; top: 12px; right: 24px/);
 });
+
+test('입력 완료 아이콘: 모든 디자인에서 ↵(Enter) 아이콘이 보이고, D 에서도 아이콘 위에 그라데이션이 겹친다', () => {
+  const th = read('assets/themes.css');
+  assert.ok(!th.includes("M5 12l5 5L20 7"), '예전 체크 아이콘이 남아 있다');
+  const rules = [...th.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter((m) => /\.ask > \.btn\[type="submit"\]/.test(m[1]) && /background/.test(m[2]));
+  assert.ok(rules.length >= 3);
+  for (const m of rules) assert.match(m[2], /M20 5v7a3 3 0 01-3 3H5/, m[1]);
+  assert.match(th, /html\[data-theme="d"\] \.ask > \.btn\[type="submit"\] \{ background: url[^}]*linear-gradient\(180deg, #3f86ee, #0b57d0\)/);
+  assert.match(th, /html\[data-theme="d"\] \.ask > \.btn\[type="submit"\]:active \{ transform: translateY\(-50%\)/);
+});
