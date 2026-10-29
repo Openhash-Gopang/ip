@@ -211,13 +211,17 @@ html[data-theme="d"] body::before { content: ""; position: fixed; inset: 0; z-in
 html[data-theme="d"] body::after { content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
   background: radial-gradient(900px 420px at 50% -8%, rgba(255,255,255,.95), transparent 70%), #eef3fb; }
 /* 유리: 머리말·레일·우측 탭·대화창 */
-html[data-theme="d"] .head, html[data-theme="d"] #chatPanel, html[data-theme="d"] .promo-tab {
+/* 머리말(.head)에는 backdrop-filter 를 직접 주지 않는다 — 주면 그 안의 position:fixed 인 제안·설정·사용자 배지가 화면 오른쪽 위가 아니라 레일 기준으로 놓인다. 유리는 ::before 에 그린다. */
+html[data-theme="d"] #chatPanel, html[data-theme="d"] .promo-tab {
   background: rgba(255,255,255,.62); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5);
   box-shadow: var(--e2), inset 0 1px 0 rgba(255,255,255,.9); }
+html[data-theme="d"] .head { background: transparent; box-shadow: var(--e2), inset 0 1px 0 rgba(255,255,255,.9); }
+html[data-theme="d"] .head::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: rgba(255,255,255,.62); -webkit-backdrop-filter: blur(14px) saturate(1.5); backdrop-filter: blur(14px) saturate(1.5); transition: background .22s ease; }
 html[data-theme="d"] .promo-tab, html[data-theme="d"] .promo-tab.how-tab { color: var(--navy); border-color: rgba(11,87,208,.35); }
 html[data-theme="d"] .promo-tab:hover { box-shadow: var(--e3), inset 0 1px 0 rgba(255,255,255,.9); background: rgba(255,255,255,.8); }
 @media (min-width: 900px) {
-  html[data-theme="d"] .head:hover, html[data-theme="d"] .head:focus-within { background: rgba(255,255,255,.78); box-shadow: var(--e4), inset 0 1px 0 rgba(255,255,255,.9); }
+  html[data-theme="d"] .head:hover, html[data-theme="d"] .head:focus-within { box-shadow: var(--e4), inset 0 1px 0 rgba(255,255,255,.9); }
+  html[data-theme="d"] .head:hover::before, html[data-theme="d"] .head:focus-within::before { background: rgba(255,255,255,.78); }
 }
 /* 검색 칸 */
 html[data-theme="d"] .ask input[type=text] { background: rgba(255,255,255,.88); border: 0; box-shadow: 0 10px 30px -10px rgba(var(--sh), .28), 0 2px 8px rgba(var(--sh), .12); }
@@ -242,7 +246,7 @@ html[data-theme="d"] .side-tabs:not(.in-rail) #promoTab { animation: navi-float 
   html[data-theme="d"] *, html[data-theme="d"] *::before, html[data-theme="d"] *::after { transition: none !important; }
 }
 @media (prefers-reduced-transparency: reduce) {
-  html[data-theme="d"] .head, html[data-theme="d"] #chatPanel, html[data-theme="d"] .promo-tab { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  html[data-theme="d"] #chatPanel, html[data-theme="d"] .promo-tab, html[data-theme="d"] .head::before { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 @media print { html[data-theme="d"] body::before, html[data-theme="d"] body::after { display: none; } }
 
