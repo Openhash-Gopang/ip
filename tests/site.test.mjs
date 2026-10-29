@@ -15,7 +15,7 @@ const js = read('assets/law.js');
 
 export function load(page, search = '', hash = '', store = {}, db = CORE, pre = null) {
   const html = read(page).replace(/<script[^>]*src="https:[^>]*><\/script>/g, '');
-  const dom = new JSDOM(html, { url: 'https://patent.hondi.net/' + page + search + hash, runScripts: 'outside-only', pretendToBeVisual: true });
+  const dom = new JSDOM(html, { url: 'https://ip.hondi.net/' + page + search + hash, runScripts: 'outside-only', pretendToBeVisual: true });
   const w = dom.window;
   for (const [k, v] of Object.entries(store)) w.localStorage.setItem(k, JSON.stringify(v));
   w.fetch = (u) => Promise.resolve({ ok: true, json: () => Promise.resolve(u === 'data/docs.json' ? db : JSON.parse(read(u))) });
@@ -130,7 +130,7 @@ test('모든 HTML의 로컬 링크·스크립트가 실제 파일을 가리킨�
     const h = read(p);
     for (const m of h.matchAll(/(?:href|src|url)=(?:"|\s*)\/?([A-Za-z0-9_\-/]+\.(?:html|css|js))/g)) { try { read(m[1]); } catch { assert.fail(p + ' → ' + m[1]); } }
   }
-  assert.equal(read('CNAME').trim(), 'patent.hondi.net');
+  assert.equal(read('CNAME').trim(), 'ip.hondi.net');
 });
 
 const PROMO_LINES = [
@@ -631,7 +631,7 @@ test('화면 테마: 다섯 페이지가 themes.css·theme.js를 불러오고, �
   assert.match(css, /\.ask > \.btn\[type="submit"\][^}]*position: absolute; right: 8px/, '초안 작성 단추는 입력 칸 오른쪽 끝의 작은 아이콘');
 });
 
-function themeDom(url = 'https://patent.hondi.net/index.html', store = {}) {
+function themeDom(url = 'https://ip.hondi.net/index.html', store = {}) {
   const dom = new JSDOM(read(/settings\.html/.test(url) ? 'settings.html' : 'index.html'), { url, runScripts: 'outside-only' });
   for (const [k, v] of Object.entries(store)) dom.window.localStorage.setItem(k, v);
   dom.window.eval(read('assets/theme.js'));
@@ -641,7 +641,7 @@ function themeDom(url = 'https://patent.hondi.net/index.html', store = {}) {
 test('화면 테마: 처음엔 D, 저장된 선택과 ?theme= 값을 따른다', () => {
   assert.equal(themeDom().window.document.documentElement.getAttribute('data-theme'), 'd');
   assert.equal(themeDom(undefined, { navipatent_theme: 'c' }).window.document.documentElement.getAttribute('data-theme'), 'c');
-  const q = themeDom('https://patent.hondi.net/index.html?theme=b', { navipatent_theme: 'c' });
+  const q = themeDom('https://ip.hondi.net/index.html?theme=b', { navipatent_theme: 'c' });
   assert.equal(q.window.document.documentElement.getAttribute('data-theme'), 'b');
   assert.equal(q.window.localStorage.getItem('navipatent_theme'), 'b');
   assert.equal(themeDom(undefined, { navipatent_theme: 'zz' }).window.document.documentElement.getAttribute('data-theme'), 'd');
@@ -666,7 +666,7 @@ test('머리말: 모든 페이지에 "제안"(혼디 제안 게시판, 새 창)�
 });
 
 test('설정: 화면 디자인 A~E를 고르면 적용·저장되고, 새 디자인이 적용된 메인 화면(./)으로 돌아간다', async () => {
-  const dom = themeDom('https://patent.hondi.net/settings.html', { navipatent_theme: 'b' });
+  const dom = themeDom('https://ip.hondi.net/settings.html', { navipatent_theme: 'b' });
   const d = dom.window.document;
   await tick();
   const cards = [...d.querySelectorAll('#themeList button[data-theme-id]')];

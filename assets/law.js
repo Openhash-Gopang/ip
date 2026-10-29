@@ -1,4 +1,4 @@
-/* 나비 특허 Navi Patent — 페이지 스크립트 (patent.hondi.net)
+/* 나비 특허 Navi Patent — 페이지 스크립트 (ip.hondi.net)
    body[data-page] = home | list | write.
    AI 대화는 hondi.net 의 전문가 대화 화면(expert-chat.html?embed=1)을 iframe 으로 끼워 쓴다.
    (서식 DB 태그·SP 결합·로그인·과금은 그 화면이 맡는다. 이 사이트는 화면과 진행 표시만 맡는다.)
